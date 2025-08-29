@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Search, Globe, ExternalLink, MapPin, Users, BookOpen, Loader2, AlertCircle } from 'lucide-react';
 
 const CollegeFinder = () => {
-  // State management for application data and UI
   const [universities, setUniversities] = useState([]);
   const [filteredUniversities, setFilteredUniversities] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,7 +11,6 @@ const CollegeFinder = () => {
   const [countries, setCountries] = useState([]);
   const [isUsingDemoData, setIsUsingDemoData] = useState(true);
 
-  // Demo data - comprehensive list of top universities worldwide
   const demoUniversities = [
     {
       name: "Massachusetts Institute of Technology",
@@ -226,15 +224,11 @@ const CollegeFinder = () => {
     }
   ];
 
-  // Popular countries for quick access
   const popularCountries = [
     'United States', 'United Kingdom', 'Canada', 'Australia', 
     'Germany', 'France', 'Japan', 'India', 'China', 'Netherlands'
   ];
 
-  /**
-   * Load demo data immediately for instant functionality
-   */
   const loadDemoData = () => {
     setUniversities(demoUniversities);
     setFilteredUniversities(demoUniversities);
@@ -245,11 +239,7 @@ const CollegeFinder = () => {
     setCountries(uniqueCountries);
   };
 
-  /**
-   * Fetch universities from the Universities API (background process)
-   * @param {string} country - Country to search for (optional)
-   * @param {string} name - University name to search for (optional)
-   */
+
   const fetchUniversities = async (country = '', name = '') => {
     setLoading(true);
     setError(null);
@@ -300,9 +290,6 @@ const CollegeFinder = () => {
     }
   };
 
-  /**
-   * Try to fetch real data in background while keeping demo data visible
-   */
   const tryFetchRealData = async () => {
     setError(null);
     try {
@@ -313,9 +300,6 @@ const CollegeFinder = () => {
     }
   };
 
-  /**
-   * Filter universities based on search query and selected country
-   */
   const filterUniversities = () => {
     let filtered = universities;
 
@@ -339,12 +323,9 @@ const CollegeFinder = () => {
     filterUniversities();
   }, [searchQuery, selectedCountry, universities]);
 
-  // Load demo data immediately on component mount
   useEffect(() => {
-    // Load demo data first for instant functionality
     loadDemoData();
     
-    // Try to fetch real data in the background after a short delay
     const timer = setTimeout(() => {
       tryFetchRealData();
     }, 1000);
@@ -352,35 +333,21 @@ const CollegeFinder = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  /**
-   * Handle country selection from popular countries or dropdown
-   * @param {string} country - Selected country name
-   */
   const handleCountrySelect = (country) => {
     setSelectedCountry(country);
     fetchUniversities(country);
   };
-
-  /**
-   * Handle search form submission
-   * @param {Event} e - Form submit event
-   */
   const handleSearch = (e) => {
     e.preventDefault();
     if (isUsingDemoData) {
-      // Just filter demo data locally
       filterUniversities();
     } else {
-      // Fetch from API with new criteria
       if (searchQuery || selectedCountry) {
         fetchUniversities(selectedCountry, searchQuery);
       }
     }
   };
 
-  /**
-   * Clear all filters and reload data
-   */
   const clearFilters = () => {
     setSearchQuery('');
     setSelectedCountry('');
@@ -391,11 +358,7 @@ const CollegeFinder = () => {
     }
   };
 
-  /**
-   * University Card Component
-   * Displays individual university information
-   * @param {Object} university - University data object
-   */
+  
   const UniversityCard = ({ university }) => (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border border-gray-200">
       {/* University Header */}
@@ -465,7 +428,7 @@ const CollegeFinder = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-800 mb-2">
-              🎓 College Finder
+               College Finder
             </h1>
             <p className="text-gray-600 text-lg">
               Discover universities worldwide and find your perfect academic destination
@@ -689,5 +652,6 @@ const CollegeFinder = () => {
     </div>
   );
 };
+
 
 export default CollegeFinder;
